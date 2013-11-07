@@ -1,18 +1,4 @@
-6
-v
-r
-
-i
-o
-
-c
-t
-
-t
-c
-
-o
-i
-
-r
-v
+6 6
+victor
+rotciv
+1 1 1 1 1 1

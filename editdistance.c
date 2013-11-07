@@ -19,43 +19,52 @@ int main(int argc, char *argv[]){
 	
 	saida = fopen("Distances.txt", "w");
 
- int tam;
+ int m, n;
  int i;
+ int Cc, Cr, Cd, Ci, Ct, Ck;
  char aux;
 
  	//fprintf(saida,"tempos:");
 	
-		fscanf(fp,"%d\n", &tam);
+		fscanf(fp,"%d %d\n", &m, &n);
 		char *vetorx;
 		char *vetory;
-   vetorx = (char*) malloc (tam*sizeof(char));
-		vetory = (char*) malloc (tam*sizeof(char));
+   vetorx = (char*) malloc (m*sizeof(char));
+		vetory = (char*) malloc (n*sizeof(char));
 
 
-  for (i=0;i<tam;i++){
-  	fscanf(fp,"%c\n", &aux);
+  for (i=0;i<m;i++){
+  	fscanf(fp,"%c", &aux);
   	//vai colocando os valores no vetor
 		vetorx[i] = aux;
-		fscanf(fp,"%c\n", &aux);
+	}
+	fscanf(fp,"\n");
+	for (i=0;i<n;i++){
+		fscanf(fp,"%c", &aux);
   	//vai colocando os valores no vetor
 		vetory[i] = aux;
-		fscanf(fp,"\n");	
-			
 	}
+		fscanf(fp,"\n");
+			fscanf(fp,"%d %d %d %d %d %d\n", &Cc, &Cr, &Cd, &Ci, &Ct, &Ck);	
 	
-	 for (i=0;i<tam;i++){
-			fprintf(saida,"%c ",vetorx[i]);
-			printf("%c ",vetorx[i]);
+	// Testando se a leitura está correta
+	 for (i=0;i<m;i++){
+			fprintf(saida,"%c",vetorx[i]);
+			printf("%c",vetorx[i]);
 	}
-	//fprintf(saida,"\n");
-	for (i=0;i<tam;i++){
-			fprintf(saida,"%c ",vetory[i]);
-			printf("%c ",vetory[i]);
-	}
-
-
-
 	printf("\n");
+	fprintf(saida,"\n");
+	for (i=0;i<n;i++){
+			fprintf(saida,"%c",vetory[i]);
+			printf("%c",vetory[i]);
+	}
+	printf("\n");
+	printf("%d %d %d %d %d %d", Cc, Cr, Cd, Ci, Ct, Ck);
+	printf("\n");
+	
+	fprintf(saida,"\n");
+	fprintf(saida,"%d %d %d %d %d %d", Cc, Cr, Cd, Ci, Ct, Ck);
+
 
 	free(vetorx);
 	free(vetory);
