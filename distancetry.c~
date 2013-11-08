@@ -13,17 +13,14 @@ Cc, Cr, Cd, Ci, Ct, Ck
 		}
 		
 EDIT-DISTANCE(x, y, m, n){
-	//coloca custo de delete em todas as colunas 0
 	for(i=0;i<m;i++){
 			T[i, 0] = i * Cd;//Custo delete
 			op[i, 0] = "d";
 	}
-	//coloca custo de insert em todas as linhas 0
 	for(j=0;j<n;j++){
 			T[0, j ] = j * Ci;//Custo insert
 			op[0, j] = "i";
 	}
-	//percorre a matriz de custo 
 	for(i=1;i<m;i++){
 			for (j=1;j<n;j++){
 					T[i, j] = ∞;//como colocar um peso maior que os custos????
@@ -59,7 +56,7 @@ EDIT-DISTANCE(x, y, m, n){
 					op[m, n] = "k";//KILL(i);
 			}
 	}
-	return;// T and op;
+	return T and op;
 }
 
 
@@ -87,7 +84,7 @@ if ((op[i, j] == "c") || (op[i, j] == "r")){
 	OP-SEQUENCE(op, aux_i , aux_j);
 	if ((op[i, j] == "c") printf("%d %d Copy %c", i, j, vetory[j]);
 	if ((op[i, j] == "r") printf("%d %d Replace %c", i, j, vetory[j]);
-	if ((op[i, j] == "t") printf("%d %d Twiddle %c%c", i, j, vetory[j-1],vetory[j]);
+	if ((op[i, j] == "t") printf("%d %d Twiddle %c", i, j, vetory[j]);
 	if ((op[i, j] == "d") printf("%d %d Delete _", i, j);
 	if ((op[i, j] == "i") printf("%d %d Insert %c", i, j, vetory[j]);
 	if ((op[i, j] == "k") printf("%d %d Kill *", i, j);
