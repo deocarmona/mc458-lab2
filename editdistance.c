@@ -4,6 +4,7 @@
 #include <string.h>
 #include <time.h>
 
+int valor_i_kill;
 //acha a resposta certa percorrendo a matrix de custo
 //T[i][j] = min 
 //---- acho que essa parte ele só explica o que é T[i,j] não é codigo---
@@ -52,14 +53,14 @@ if ((op[i][j] == 'c') || (op[i][j] == 'r')){
 }else if (op[i][j] == 't'){
 		aux_i = i - 2;
 		aux_j = j - 2;
-}else if (op[i][j] == 'd'){
+} else if (op[i][j] == 'd'){
 		aux_i = i - 1;
 		aux_j = j;
-}else if (op[i][j] == 'i'){
+} else if (op[i][j] == 'i'){
 		aux_i = i;
 		aux_j = j - 1;
-}else{
-		op[i][j] == 'k';
+} else if(op[i][j]=='k'){
+
 		aux_i = valor_i_kill;
 		aux_j = j;
 }
@@ -74,7 +75,7 @@ if ((op[i][j] == 'c') || (op[i][j] == 'r')){
 }
 
 
-void edit_distances(char x[], char y[], int m, int n,int Cc,int Cr,int Cd,int Ci,int Ct,int Ck,int* T[m],char* op[m],int* valor_i_kill){
+void edit_distances(char x[], char y[], int m, int n,int Cc,int Cr,int Cd,int Ci,int Ct,int Ck,int* T[m],char* op[m],int valor_i_kill){
 	int i;
 	int j;
 	//coloca custo de delete em todas as colunas 0
@@ -88,7 +89,8 @@ void edit_distances(char x[], char y[], int m, int n,int Cc,int Cr,int Cd,int Ci
 			op[0][j] = 'i';
 	}
 	//T[0][0]=0;
-	op[0][0]=' ';
+	//valor_i_kill = m;
+	//op[0][0]=' ';
 		//percorre a matriz de custo 
 	for(i=1;i<m+1;i++){
 			for (j=1;j<n+1;j++){
@@ -96,37 +98,38 @@ void edit_distances(char x[], char y[], int m, int n,int Cc,int Cr,int Cd,int Ci
 					T[i][j] = minimo_custo(x, y,i,j,m,n,T,Cc,Cr,Cd,Ci,Ct,Ck);
 					
 					if (x[i-1] == y[j-1]){//se as letras forem iguais copia
-							T[i][j] = Cc;//T[i-1][j-1];//Custo copy
+							//T[i][j] = Cc;//T[i-1][j-1];//Custo copy
 							op[i][j] = 'c';
-					}	
-					//se o custo de troca for menor
+					}else //se o custo de troca for menor
 					if ((x[i-1] != y[j-1]) && ((T[i-1][j-1] + Cr) == T[i][j])){//Custo replace
-							T[i][j] = Cr;// +T[i-1][j-1];//Custo replace
+							//T[i][j] = Cr;// +T[i-1][j-1];//Custo replace
 							op[i][j] = 'r';//REPLACE(by y[j]);
-					}				
+					}else		
 					//	
 					if (( i >= 2) && (j >= 2) && (x[i] == y[j-1]) && 
 					(x[i-1] == y[j]) && ((T[i-2][j-2] + Ct) == T[i][j])){//Custo twiddle
-							T[i][j] = Ct;//+T[i-2][j-2];//Custo twiddle
+							//T[i][j] = Ct;//+T[i-2][j-2];//Custo twiddle
 							op[i][j] = 't';
-					}
+					}else
 					//				
 					if ((T[i-1][j] + Cd) == T[i][j]){
-							T[i][j] = Cd;//+T[i-1][j] ;//Custo delete
+							//T[i][j] = Cd;//+T[i-1][j] ;//Custo delete
 							op[i][j] = 'd';
-					}
+					}else
 					if (T[i][j-1] + Ci == T[i][j]){
-							T[i][j] = Ci;//+T[i][j-1];//Custo insert
+							//T[i][j] = Ci;//+T[i][j-1];//Custo insert
 							op[i][j] = 'i';//INSERT(y[j]);
 					}
+
 			}
 	}		
-	for(i=0;i<m+1;i++){
+	for(i=0;i<m;i++){
 			if (T[i][n] + Ck < T[m][n]){
-					T[m][n] = Ck;//+T[i][n];//Custo
+					T[m][n] = Ck+T[i][n];//Custo
 					op[m][n] = 'k';//KILL(i);
 					valor_i_kill = i;
 			}
+			
 	}
 	return;// T and op;
 }
@@ -144,7 +147,7 @@ int main(int argc, char *argv[]){
 	if (!fp) printf ("Erro na abertura do arquivo.");
 	
 	saida = fopen("Distances.txt", "w");
-	int valor_i_kill;
+	//int valor_i_kill;
  int m, n;
  int i,j;
 	int Cc, Cr, Cd, Ci, Ct, Ck;
@@ -170,7 +173,7 @@ int main(int argc, char *argv[]){
    for (i=0;i<m+1;i++){
 				op[i] = (char*) malloc ((n+1)*sizeof(char));
 		}
-		
+
 	//le o arquivo colocando nos vetores as palavras correspondentes
   for (i=0;i<m;i++){
   	fscanf(fp,"%c", &aux);
@@ -189,13 +192,13 @@ int main(int argc, char *argv[]){
 		fscanf(fp,"%d %d %d %d %d %d\n", &Cc, &Cr, &Cd, &Ci, &Ct, &Ck);	
 	
 	//Começa a bomba!!!
-	edit_distances(x,y,m,n,Cc,Cr,Cd,Ci,Ct,Ck,T,op, &valor_i_kill);
+	edit_distances(x,y,m,n,Cc,Cr,Cd,Ci,Ct,Ck,T,op, 	valor_i_kill);
 
-	seq_op(m, n,y,op,m,valor_i_kill);
+	seq_op(m,n,y,op,m,valor_i_kill);
 	
 	
-			for(i=0;i<m+1;i++){
-					for (j=0;j<n+1;j++){	
+			for(i=1;i<m+1;i++){
+					for (j=1;j<n+1;j++){	
 							printf("%2c ", op[i][j]);
 						}
 						printf("\n");
